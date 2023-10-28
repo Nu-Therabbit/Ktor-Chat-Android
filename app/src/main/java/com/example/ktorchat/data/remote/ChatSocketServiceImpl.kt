@@ -3,13 +3,19 @@ package com.example.ktorchat.data.remote
 import com.example.ktorchat.data.remote.dto.MessageDto
 import com.example.ktorchat.domain.model.Message
 import com.example.ktorchat.util.Resource
-import io.ktor.client.*
-import io.ktor.client.features.websocket.*
-import io.ktor.client.request.*
-import io.ktor.http.cio.websocket.*
-import kotlinx.coroutines.flow.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.websocket.webSocketSession
+import io.ktor.client.request.url
+import io.ktor.websocket.Frame
+import io.ktor.websocket.WebSocketSession
+import io.ktor.websocket.close
+import io.ktor.websocket.readText
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.isActive
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class ChatSocketServiceImpl(private val client: HttpClient) : ChatSocketService {

@@ -10,10 +10,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.logging.*
-import io.ktor.client.features.websocket.*
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.serialization.kotlinx.json.*
 import javax.inject.Singleton
 
 @Module
@@ -26,8 +26,8 @@ object AppModule {
         return HttpClient(CIO) {
             install(Logging)
             install(WebSockets)
-            install(JsonFeature) {
-                serializer = KotlinxSerializer()
+            install(ContentNegotiation) {
+                json()
             }
         }
     }
